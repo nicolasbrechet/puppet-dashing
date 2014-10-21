@@ -40,7 +40,7 @@ define dashing::instance (
     $strip_parent_cmd = '--strip-components=1'
   }
   exec {"dashing-get-$name":
-    command => "/usr/bin/wget $targz -O /tmp/$name.tar.gz; /bin/tar -zxvf /tmp/$name.tar.gz -C $dashing_dir $strip_parent_cmd; /bin/rm /tmp/$name.tar.gz",
+    command => "/usr/bin/wget $targz -O /tmp/$name.tar.gz; /bin/tar -zxvf /tmp/$name.tar.gz -C $dashing_dir $strip_parent_cmd; /bin/rm /tmp/$name.tar.gz; cd $dashing_dir && /usr/bin/bundle install",
     unless  => "/bin/ls $dashing::dashing_basepath/$name/dashboards",
     notify  => Service[$dashing::service_name],
   }
