@@ -23,7 +23,20 @@ class dashing::install {
     }
   }
   
-  if $::lsbdistcodename != 'trusty' {
+  if $::lsbdistcodename == 'trusty'{
+    package {$dashing::dashing_package_name:
+      ensure   => $dashing::package_status,
+      provider => 'gem'
+    }
+    
+    if !defined(Package['bundler']) {
+      package {'bundler':
+        ensure => installed,
+      }
+    }
+    
+  }
+  else {
     
     package {$dashing::dashing_package_name:
       ensure   => $dashing::package_status,
@@ -39,25 +52,6 @@ class dashing::install {
     
     if !defined(Package['ruby-bundler']) {
       package {'ruby-bundler':
-        ensure => installed,
-      }
-    }
-  }
-  else {
-    package {$dashing::dashing_package_name:
-      ensure   => $dashing::package_status,
-      provider => 'gem',
-      require  => Package['ruby'],
-    }
-    
-    if !defined(Package['ruby']) {
-      package {'ruby':
-        ensure  => installed,
-      }
-    }
-    
-    if !defined(Package['bundler']) {
-      package {'bundler':
         ensure => installed,
       }
     }
